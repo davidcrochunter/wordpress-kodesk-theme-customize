@@ -30,8 +30,5 @@
             </div>
         </section>
     </div> -->
-    <div id="floating-panel">
-      <button id="drop">Drop Markers</button>
-    </div>
     <div id="map"></div>
 </div>

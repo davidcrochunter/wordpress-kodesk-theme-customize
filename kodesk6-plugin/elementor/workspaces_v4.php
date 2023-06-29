@@ -12,6 +12,84 @@ use Elementor\Utils;
 use Elementor\Group_Control_Text_Shadow;
 use Elementor\Plugin;
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * Console log
+ */
+function console($log) {
+
+    if( is_array($log) ) {
+
+        $log = json_encode($log);
+        $log = str_replace('"', '', $log);
+
+        echo '<script>console.log("array:'.$log.'");</script>';
+
+    } else if( is_object($log) ) {
+
+        $log = json_encode($log);
+        $log = str_replace('"', '', $log);
+
+        echo '<script>console.log("object:'.$log.'");</script>';
+
+    } else {
+
+        $log = str_replace('"', '', $log);
+        
+        echo '<script>console.log("'.$log.'");</script>';
+    }
+}
+
+function consoleret($log) {
+
+    if( is_array($log) ) {
+
+        $log = json_encode($log);
+        $log = str_replace('"', '', $log);
+
+        return '<script>console.log("array:'.$log.'");</script>';
+
+    } else if( is_object($log) ) {
+
+        $log = json_encode($log);
+        $log = str_replace('"', '', $log);
+
+        return '<script>console.log("object:'.$log.'");</script>';
+
+    } else {
+
+        $log = str_replace('"', '', $log);
+        
+        return '<script>console.log("'.$log.'");</script>';
+    }
+}
+
+
+
+
+
+
+
+
+
+
 /**
  * Elementor button widget.
  * Elementor widget that displays a button with the ability to control every
@@ -179,13 +257,15 @@ class Workspaces_V4 extends Widget_Base {
         $this->add_render_attribute( 'wrapper', 'class', 'templatepath-kodesk' );
         $args = array(
             'post_type'      => 'workspace',
-            'posts_per_page' => kodesk_set( $settings, 'query_number' ),
+            'posts_per_page' => 4,//kodesk_set( $settings, 'query_number' ),
             'orderby'        => kodesk_set( $settings, 'query_orderby' ),
             'order'          => kodesk_set( $settings, 'query_order' ),
             'paged'          => $paged
         );
 
-        if( kodesk_set( $settings, 'query_category' ) ) $args['workspace_cat'] = kodesk_set( $settings, 'query_category' );
+        if( kodesk_set( $settings, 'query_category' ) ) {
+            $args['workspace_cat'] = kodesk_set( $settings, 'query_category' );
+        }
 
         /**
          * Add v4-filters to query args
@@ -231,23 +311,17 @@ class Workspaces_V4 extends Widget_Base {
             $args['tax_query'] = $tax_query;
         }
 
+        global $wp_query;
+        $temp_query = $wp_query;
 
+        $wp_query = new \WP_Query( $args );
 
+        include_once(ABSPATH . 'wp-content/plugins/kodesk10-plugin/custom-template/v4-filter.php');
 
-        $query = new \WP_Query( $args );
-        ?>
-        <div id="map"></div>
-        <?php
-
-
-
-
-        include_once(ABSPATH . 'wp-content/plugins/kodesk6-plugin/custom-template/v4-filter.php');
-
-        if ( $query->have_posts() ) { ?>
+        if ( /*$query->*/have_posts() ) { ?>
 
             <!-- workspaces-page-section --> 
-            <section class="workspaces-page-section">
+            <section class="workspaces-page-section" data-workspace-cat="<?php echo $args['workspace_cat'] ?>">
                 <div class="auto-container">
                     <div class="row clearfix">
                         <?php if($settings['left_right_sidebar'] == 'left') { ?>
@@ -262,55 +336,19 @@ class Workspaces_V4 extends Widget_Base {
                             <div class="workspaces-content-side">
                                 <div class="row clearfix">
                                     <?php global $post;
-                                    while ( $query->have_posts() ) : $query->the_post(); ?>
-                                    <div class="col-lg-6 col-md-6 col-sm-12 workspaces-block">
-                                        <div class="workspaces-block-two wow fadeInUp animated" data-wow-delay="00ms" data-wow-duration="1500ms">
-                                            <div class="inner-box">
-                                                <div class="upper-box">
-                                                    <?php $post = get_post(); // Get the post object
-                                                          $post_url = get_permalink($post); // Get the permalink for the post
-                                                    ?>
-                                                    <h3><a href="<?php echo $post_url; ?>"><?php the_title(); ?></a></h3>
-                                                    <div class="text"><i class="flaticon-pointer-inside-a-circle"></i><?php echo wp_kses(get_post_meta( get_the_id(), 'address', true ), true); ?></div>
-                                                </div>
-                                                <div class="image-box">
-                                                    <span class="category"><?php echo wp_kses(get_post_meta( get_the_id(), 'feature_tag', true ), true); ?></span>
-                                                    <?php $image = wp_get_attachment_image_src(get_post_thumbnail_id($post->ID), 'single-post-thumbnail'); ?>
-                                                    <div class="view-btn"><a href="<?php echo esc_url($image[0]); ?>"><i class="flaticon-photo-camera"></i></a></div>
-                                                    <figure class="image"><?php the_post_thumbnail('kodesk_310x180'); ?></figure>
-                                                </div>
-                                                <div class="lower-content">
-                                                    <ul class="feature-list clearfix">
-                                                        <?php if (get_post_meta( get_the_id(), 'square_feet', true )){ ?>
-                                                        <li>
-                                                            <i class="flaticon-select"></i>
-                                                            <h6><?php esc_html_e('Total Area', 'kodesk'); ?></h6>
-                                                            <span><?php echo wp_kses(get_post_meta( get_the_id(), 'square_feet', true ), true); ?></span>
-                                                        </li>
-                                                        <?php } ?>
-                                                        
-                                                        <?php if (get_post_meta( get_the_id(), 'users', true )){ ?>
-                                                        <li>
-                                                            <i class="flaticon-user"></i>
-                                                            <h6><?php esc_html_e('Capacity', 'kodesk'); ?></h6>
-                                                            <span><?php echo wp_kses(get_post_meta( get_the_id(), 'users', true ), true); ?></span>
-                                                        </li>
-                                                        <?php } ?>
-                                                    </ul>
-                                                    <div class="lower-box clearfix">
-                                                        <div class="text"><?php echo wp_kses(get_post_meta( get_the_id(), 'price_package', true ), true); ?></div>
-                                                        <div class="link"><a href="<?php echo esc_url(get_post_meta( get_the_id(), 'ext_url', true )); ?>"><i class="fas fa-angle-right"></i><span><?php esc_html_e('Read More', 'kodesk'); ?></span></a></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    while ( /*$query->*/have_posts() ) : /*$query->*/the_post(); ?>
+                                        <?php include(ABSPATH . 'wp-content/plugins/kodesk10-plugin/custom-template/v4-content.php'); ?>
                                     <?php endwhile; ?>
                                 </div>
+                                
+                                <?php include_once(ABSPATH . 'wp-content/plugins/kodesk10-plugin/custom-template/v4-pagination.php'); ?>
+                                <?php wp_reset_postdata(); ?>
+                                <?php $wp_query = $temp_query; ?>
+
                             </div>
                         </div>
                         
-                        <?php //include_once(ABSPATH . 'wp-content/plugins/kodesk-plugin/custom-template/v4-map.php'); ?>
+                        <?php include_once(ABSPATH . 'wp-content/plugins/kodesk10-plugin/custom-template/v4-map.php'); ?>
 
                         <?php if($settings['left_right_sidebar'] == 'right') { ?>
                         <!-- <div class="col-lg-4 col-md-12 col-sm-12 sidebar-side">
