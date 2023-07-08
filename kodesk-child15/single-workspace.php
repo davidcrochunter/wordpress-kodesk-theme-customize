@@ -120,7 +120,7 @@ if ( class_exists( '\Elementor\Plugin' ) && $data->get( 'tpl-type' ) == 'e') {
                                     	<?php if (!empty($prev_post)): ?>
                                         <div class="single-btn-box prev-btn">
                                             <a href="<?php echo esc_url(get_permalink($prev_post->ID)); ?>">
-                                                <i class="fas fa-angle-left"></i><i class="light-icon fas fa-angle-left"></i><span><?php esc_html_e( 'Prev', 'kodesk' ); ?></span>
+                                                <i class="light-icon fas fa-angle-left"></i><span><?php esc_html_e( 'Prev', 'kodesk' ); ?></span>
                                                 <h5><?php echo wp_kses(kodesk_trim( get_the_title($prev_post->ID), 5 ), true); ?></h5>
                                             </a>
                                         </div>
