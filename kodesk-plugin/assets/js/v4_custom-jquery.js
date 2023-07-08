@@ -263,7 +263,12 @@ jQuery(document).ready(function($) {
 
     });
 
+	
+
+
 });
+
+
 
 /**
  * scroll swipe down ajax load
@@ -282,7 +287,7 @@ jQuery(document).ready(function($) {
 		currentTop = $(window).scrollTop();
 		boundTop = currentTop + $(window).height();
 
-		if(is_remain_ajax && boundTop >= $bottomMarker.offset().top) {
+		if(!$('#v4-carts-view-area').is(":hidden") && is_remain_ajax && boundTop >= $bottomMarker.offset().top) {
 			if(!is_v4_over_scrolling) {
 
 				is_v4_over_scrolling = true;
@@ -300,6 +305,12 @@ jQuery(document).ready(function($) {
 				document.documentElement.scrollTop = document.body.scrollTop = stop_scroll_pos;
 			}
 		}
+	});
+	jQuery(window).on('resize', function(e) {
+		if($(window).width() >= 1200 ) {
+			$('#v4-carts-view-area').show();
+		}
+		
 	});
 });
 
@@ -327,3 +338,30 @@ window.onload = function() {
 	});
 }
 */
+
+/**
+ * conversion between laptop and mobile
+ */
+jQuery(document).ready(function($) {
+	$('#v4-mini-map-btn').on('click', function(event) {
+		// debugger;
+		// const carts_view = document.getElementById('v4-carts-view-area');
+		// const isCatsViewNone = carts_view.display === 'none';
+		if($('#v4-carts-view-area').is(":hidden")) {
+			$('#v4-carts-view-area').show();
+			$('#v4-map-view-area').hide();
+			
+			$('#v4-mini-map-btn i').removeClass('fa-list');
+			$('#v4-mini-map-btn i').addClass('fa-map');
+
+
+		} else {
+			$('#v4-carts-view-area').hide();
+			$('#v4-map-view-area').show();
+
+			$('#v4-mini-map-btn i').removeClass('fa-map');
+			$('#v4-mini-map-btn i').addClass('fa-list');
+		}
+
+	});
+});

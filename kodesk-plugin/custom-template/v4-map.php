@@ -1,4 +1,4 @@
-<div class="col-lg-4 col-md-12 col-sm-12 sidebar-side map-sticky">
+<div id="v4-map-view-area" class="col-lg-4 col-md-12 col-sm-12 sidebar-side map-sticky" >
     <!-- <div data-elementor-type="wp-page" data-elementor-id="1052" class="elementor elementor-1052">
         <section class="elementor-section elementor-top-section elementor-element elementor-element-6a9981c elementor-section-full_width elementor-section-height-default elementor-section-height-default" data-id="6a9981c" data-element_type="section">
             <div class="elementor-container elementor-column-gap-default">
