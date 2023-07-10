@@ -316,7 +316,7 @@ class Workspaces_V4 extends Widget_Base {
 
         $wp_query = new \WP_Query( $args );
 
-        include_once(ABSPATH . 'wp-content/plugins/kodesk53-plugin/custom-template/v4-filter.php');
+        include_once(ABSPATH . 'wp-content/plugins/kodesk54-plugin/custom-template/v4-filter.php');
 
         if ( /*$query->*/have_posts() ) { ?>
 
@@ -338,23 +338,23 @@ class Workspaces_V4 extends Widget_Base {
                         </div> -->
                         <?php } ?>
 
-                        <div id="v4-carts-view-area" class="col-lg-8 col-md-12 col-sm-12 content-side">
+                        <div id="v4-carts-view-area" class="col-lg-7 col-md-12 col-sm-12 content-side">
                             <div class="workspaces-content-side">
                                 <div class="row clearfix">
                                     <?php global $post;
                                     while ( /*$query->*/have_posts() ) : /*$query->*/the_post(); ?>
-                                        <?php include(ABSPATH . 'wp-content/plugins/kodesk53-plugin/custom-template/v4-content.php'); ?>
+                                        <?php include(ABSPATH . 'wp-content/plugins/kodesk54-plugin/custom-template/v4-content.php'); ?>
                                     <?php endwhile; ?>
                                 </div>
                                 
-                                <?php include_once(ABSPATH . 'wp-content/plugins/kodesk53-plugin/custom-template/v4-pagination.php'); ?>
+                                <?php include_once(ABSPATH . 'wp-content/plugins/kodesk54-plugin/custom-template/v4-pagination.php'); ?>
                                 <?php wp_reset_postdata(); ?>
                                 <?php $wp_query = $temp_query; ?>
 
                             </div>
                         </div>
                         
-                        <?php include_once(ABSPATH . 'wp-content/plugins/kodesk53-plugin/custom-template/v4-map.php'); ?>
+                        <?php include_once(ABSPATH . 'wp-content/plugins/kodesk54-plugin/custom-template/v4-map.php'); ?>
 
                         <?php if($settings['left_right_sidebar'] == 'right') { ?>
                         <!-- <div class="col-lg-4 col-md-12 col-sm-12 sidebar-side">
