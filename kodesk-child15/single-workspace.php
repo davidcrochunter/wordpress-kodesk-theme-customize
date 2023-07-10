@@ -6,6 +6,70 @@
  * @author  Theme Kalia
  * @version 1.0
  */
+function related_workspace_render() {
+
+
+    $args = array(
+        'post_type'      => 'workspace',
+        'posts_per_page' => 4,//kodesk_set( $settings, 'query_number' ),
+        'paged'          => 1,
+        'posts_per_page'          => 3,
+    );
+
+    global $wp_query;
+    $temp_query = $wp_query;
+
+    $wp_query = new \WP_Query( $args );
+
+
+    if ( /*$query->*/have_posts() ) { ?>
+
+        <!-- workspaces-page-section --> 
+        <section class="workspaces-page-section v4-detail-related-workspace-section">
+
+
+
+            <div class="auto-container">
+                <div class="row clearfix">
+
+                    <div class="col-lg-12 col-md-12 col-sm-12 content-side">
+                        <div class="workspaces-content-side">
+                            <div class="row clearfix">
+                                <?php global $post;
+                                while ( /*$query->*/have_posts() ) : /*$query->*/the_post(); ?>
+                                    <?php include(ABSPATH . 'wp-content/plugins/kodesk54-plugin/custom-template/v4-detail-related.php'); ?>
+                                <?php endwhile; ?>
+                            </div>
+                        </div>
+                    </div>
+                    
+
+                </div>
+            </div>
+        </section>
+        <!-- workspaces-page-section end -->
+    
+    <?php wp_reset_postdata(); }
+    else {
+        ?>
+        <section class="v4-filter-section">
+            <div class="auto-container">
+                <div class="row clearfix">
+                    <div class="col-lg-12 col-md-12 v4-no-posts">
+                        Sorry, There is not matched data...
+                    </div>
+                </div>
+            </div>
+        </section>
+        <?php
+    }
+}
+
+
+
+
+
+
 
 get_header();
 $data    = \KODESK\Includes\Classes\Common::instance()->data( 'single' )->get();
@@ -140,6 +204,18 @@ if ( class_exists( '\Elementor\Plugin' ) && $data->get( 'tpl-type' ) == 'e') {
                                 </div>
                             </div>
                             <?php } ?>
+
+
+
+
+
+
+
+
+
+
+
+
                             
                             <?php if( $options->get( 'single_post_author_box' ) ): ?>
                             <div class="author-box">
@@ -168,6 +244,13 @@ if ( class_exists( '\Elementor\Plugin' ) && $data->get( 'tpl-type' ) == 'e') {
                 ?>
             
             </div>
+
+            <div style="padding-top: 30px"><h1 id="v4-detail-related-ws-title">Related Workspaces</h1></div>
+            <?php related_workspace_render(); ?>
+
+
+
+
         </div>
     </div>
 </section>
